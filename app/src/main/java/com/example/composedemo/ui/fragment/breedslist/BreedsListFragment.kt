@@ -7,15 +7,21 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.composedemo.ui.fragment.breedslist.BreedListVM
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedsListFragment(modifier: Modifier = Modifier, onListItemClick: (String) -> Unit = {}) {
+fun BreedsListFragment(
+    modifier: Modifier = Modifier,
+    onListItemClick: (String) -> Unit = {},
+    viewModel: BreedListVM = viewModel()
+) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        BreedsListScreen(onListItemClick = onListItemClick)
+        BreedsListScreen(onListItemClick = onListItemClick, breedsList = viewModel.breedsList)
     }
 }
 

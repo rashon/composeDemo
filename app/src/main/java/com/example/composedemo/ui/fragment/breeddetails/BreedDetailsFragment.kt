@@ -7,10 +7,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedDetailsFragment(modifier: Modifier = Modifier, breedId: String) {
+fun BreedDetailsFragment(
+    modifier: Modifier = Modifier,
+    breedId: String,
+    viewModel: BreedDetailsVM = viewModel()
+) {
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {

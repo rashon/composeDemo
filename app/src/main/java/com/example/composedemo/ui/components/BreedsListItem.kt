@@ -21,11 +21,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composedemo.R
+import com.example.composedemo.data.model.BreedModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreedsListItem(
+    item: BreedModel,
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit = {}
 ) {
@@ -43,7 +45,7 @@ fun BreedsListItem(
                     .border(1.dp, MaterialTheme.colorScheme.secondary, CircleShape)
             )
             Text(
-                text = "Breed Heading",
+                text = item.name,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 14.sp,
@@ -65,6 +67,6 @@ fun BreedsListItem(
 @Composable
 fun PreviewBreedsListItem() {
     ComposeDemoTheme {
-        BreedsListItem()
+        BreedsListItem(BreedModel("Preview Test"))
     }
 }
