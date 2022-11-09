@@ -2,6 +2,7 @@ package com.example.composedemo.ui.fragment
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -22,16 +23,16 @@ fun BreedsListScreen(
 ) {
     LazyVerticalGrid(
         modifier = Modifier.padding(16.dp),
-        columns = GridCells.Adaptive(160.dp),
+        columns = GridCells.Adaptive(minSize = 152.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         items(items = breedsList, key = { breed -> breed.name }) {
-            BreedsListItem(
-                item = it,
-                modifier = modifier.padding(16.dp),
-                onItemClick = { onListItemClick.invoke(it.name) }
-            )
+            BreedsListItem(item = it,
+                modifier = modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                onItemClick = { onListItemClick.invoke(it.name) })
         }
     }
 }
