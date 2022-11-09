@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedsListFragment(modifier: Modifier = Modifier, onListItemClick: () -> Unit = {}) {
+fun BreedsListFragment(modifier: Modifier = Modifier, onListItemClick: (String) -> Unit = {}) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background

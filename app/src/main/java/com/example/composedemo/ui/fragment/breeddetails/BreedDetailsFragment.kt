@@ -10,11 +10,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedDetailsFragment(modifier: Modifier = Modifier) {
+fun BreedDetailsFragment(modifier: Modifier = Modifier, breedId: String) {
     Surface(
         modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
-        BreedDetailsScreen()
+        BreedDetailsScreen(breedId = breedId)
     }
 }
 
@@ -23,6 +23,6 @@ fun BreedDetailsFragment(modifier: Modifier = Modifier) {
 @Composable
 fun BreedDetailsFragmentPreview() {
     ComposeDemoTheme {
-        BreedDetailsFragment()
+        BreedDetailsFragment(breedId = "test Breed")
     }
 }

@@ -13,17 +13,17 @@ import com.example.composedemo.ui.components.BreedsListItem
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedsListScreen(modifier: Modifier = Modifier, onListItemClick: () -> Unit = {}) {
+fun BreedsListScreen(modifier: Modifier = Modifier, onListItemClick: (String) -> Unit = {}) {
     LazyVerticalGrid(
         modifier = Modifier.padding(16.dp),
         columns = GridCells.Adaptive(160.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(8) {
+        items(18) {
             BreedsListItem(
                 modifier = modifier.padding(16.dp),
-                onItemClick = onListItemClick
+                onItemClick = { onListItemClick.invoke("test breed") }
             )
         }
     }

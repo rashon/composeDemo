@@ -12,14 +12,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
-fun BreedDetailsScreen(modifier: Modifier = Modifier) {
+fun BreedDetailsScreen(modifier: Modifier = Modifier, breedId: String) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
             .fillMaxWidth()
             .verticalScroll(scrollState)
     ) {
-        Text(text = "Breed Details")
+        Text(text = "Breed Details for $breedId")
     }
 }
 
@@ -28,6 +28,6 @@ fun BreedDetailsScreen(modifier: Modifier = Modifier) {
 @Composable
 fun ItemsScreenPreview() {
     ComposeDemoTheme {
-        BreedDetailsScreen()
+        BreedDetailsScreen(breedId = "Preview test")
     }
 }
