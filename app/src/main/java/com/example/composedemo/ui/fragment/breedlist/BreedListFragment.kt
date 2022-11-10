@@ -8,19 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.composedemo.ui.theme.ComposeDemoTheme
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BreedListFragment(
     modifier: Modifier = Modifier,
-    onListItemClick: (String) -> Unit = {},
-    viewModel: BreedListVM = koinViewModel()
+    onListItemClick: (String) -> Unit = {}
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        BreedsListScreen(onListItemClick = onListItemClick, viewModel = viewModel)
+        BreedsListScreen(onListItemClick = onListItemClick)
     }
 }
 

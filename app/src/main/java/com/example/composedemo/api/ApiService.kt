@@ -1,5 +1,6 @@
 package com.example.composedemo.api
 
+import com.example.composedemo.api.response.DetailsResponse
 import com.example.composedemo.api.response.ImageResponse
 import com.example.composedemo.api.response.MessageResponse
 import retrofit2.Retrofit
@@ -12,7 +13,10 @@ interface ApiService {
     suspend fun getBreedList(): MessageResponse
 
     @GET("breed/{breedName}/images/random")
-    suspend fun getImageByUrl(@Path("breedName") breedName: String): ImageResponse
+    suspend fun getImageUrl(@Path("breedName") breedName: String): ImageResponse
+
+    @GET("breed/{breedName}/images")
+    suspend fun getListOfImages(@Path("breedName") breedName: String): DetailsResponse
 
     companion object {
         var apiService: ApiService? = null

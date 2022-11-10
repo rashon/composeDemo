@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composedemo.ui.components.BreedsListItem
+import com.example.composedemo.ui.components.ErrorBox
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -60,7 +60,7 @@ fun BreedsListScreen(
                 }
             }
         } else {
-            Text(text = viewModel.errorMessage)
+            ErrorBox(message = viewModel.errorMessage)
         }
     }
 }

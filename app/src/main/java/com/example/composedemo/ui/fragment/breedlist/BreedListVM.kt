@@ -24,14 +24,15 @@ class BreedListVM(private val breedsRepository: BreedsRepository) : ViewModel() 
             val result = kotlin.runCatching {
                 try {
                     _breedList.clear()
-                    breedsRepository.getAllBreeds().message.keys.toList().forEach { breed ->
-                        _breedList.add(
-                            BreedModel(
-                                name = breed,
-                                imageUrls = listOf(breedsRepository.getBreedImage(breed).imageUrl)
+                    breedsRepository.getAllCachedBreeds()?.message?.keys?.toList()
+                        ?.forEach { breed ->
+                            _breedList.add(
+                                BreedModel(
+                                    name = breed,
+                                    imageUrls = listOf(breedsRepository.getBreedImage(breed).imageUrl)
+                                )
                             )
-                        )
-                    }
+                        }
                 } catch (e: Exception) {
                     errorMessage = e.message.toString()
                 }

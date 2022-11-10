@@ -7,5 +7,5 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     viewModel { BreedListVM(get()) }
-    viewModel { BreedDetailsVM() }
+    viewModel { BreedDetailsVM(get()) }
 }
