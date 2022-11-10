@@ -81,14 +81,16 @@ class BreedListVM : ViewModel() {
         "https://images.dog.ceo/breeds/hound-walker/n02089867_1988.jpg"
     )
 
-    private fun generateBreedsList(): List<BreedModel> =
-        List(images.size) { i ->
-            BreedModel(
-                name = "Breed ${i + 1}", imageUrls = listOf(images[i]), subBreeds = if (i == 3) {
-                    listOf("Sub Breed1", "Sub Breed2")
-                } else null
-            )
-        }
+    private fun generateBreedsList(): List<BreedModel> = List(images.size) { i ->
+        BreedModel(
+            name = "Breed ${i + 1}",
+            imageUrls = listOf(images[i]),
+            subBreeds = if (i == 3) {
+                listOf("Sub Breed1", "Sub Breed2")
+            } else null,
+            breedId = i
+        )
+    }
 
 
 //    private val _breedsList = generateBreedsList().toMutableStateList()

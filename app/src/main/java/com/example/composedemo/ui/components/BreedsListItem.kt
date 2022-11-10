@@ -67,8 +67,6 @@ fun BreedsListItem(
                         .align(Alignment.Center),
                 )
             }
-//            Column(
-//                modifier = Modifier.align(Alignment.BottomCenter).padding(16.dp)) {
             TextWithShadow(
                 text = item.name,
                 textAlign = TextAlign.Center,
@@ -90,6 +88,6 @@ fun BreedsListItem(
 @Composable
 fun PreviewBreedsListItem() {
     ComposeDemoTheme {
-        BreedsListItem(BreedModel("Preview Test"))
+        BreedsListItem(BreedModel(0,"Preview Test"))
     }
 }
