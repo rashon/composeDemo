@@ -6,6 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.composedemo.di.apiModule
+import com.example.composedemo.di.repositoryModule
 import com.example.composedemo.di.viewModelModule
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 import org.koin.android.ext.koin.androidContext
@@ -21,7 +23,7 @@ class MainActivity : ComponentActivity() {
             // Reference Android context
             androidContext(this@MainActivity)
             // Load modules
-            modules(viewModelModule)
+            modules(viewModelModule, repositoryModule, apiModule)
         }
         setContent {
             ComposeDemoTheme {
