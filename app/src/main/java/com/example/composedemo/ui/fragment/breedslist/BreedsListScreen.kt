@@ -1,4 +1,4 @@
-package com.example.composedemo.ui.fragment
+package com.example.composedemo.ui.fragment.breedslist
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement

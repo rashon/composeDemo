@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composedemo.ui.fragment.breedslist.BreedListVM
+import com.example.composedemo.ui.fragment.breedslist.BreedsListScreen
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @Composable
