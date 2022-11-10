@@ -32,7 +32,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
 import com.example.composedemo.R
-import com.example.composedemo.data.model.BreedModel
+import com.example.composedemo.domain.model.BreedModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +64,7 @@ fun BreedsListItem(
                 )
             if (imagePainter.state is AsyncImagePainter.State.Loading) {
                 CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                     modifier = Modifier
                         .sizeIn(maxWidth = 56.dp)
                         .align(Alignment.Center),
@@ -73,8 +74,8 @@ fun BreedsListItem(
             TextWithShadow(
                 text = item.name,
                 textAlign = TextAlign.Center,
-                color = Color.White,
-                shadowColor = Color.Black,
+                color = MaterialTheme.colorScheme.onPrimary,
+                shadowColor = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.labelLarge.copy(lineHeight = 16.sp),
                 modifier = Modifier
                     .align(BottomCenter)
@@ -92,6 +93,6 @@ fun BreedsListItem(
 @Composable
 fun PreviewBreedsListItem() {
     ComposeDemoTheme {
-        BreedsListItem(BreedModel(0,"Preview Test"))
+        BreedsListItem(BreedModel("Preview Test"))
     }
 }
