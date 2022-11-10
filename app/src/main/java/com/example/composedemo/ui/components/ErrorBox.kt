@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.example.composedemo.R
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
@@ -30,16 +30,17 @@ fun ErrorBox(
         onClick = onItemClick, modifier = Modifier.padding(24.dp), shape = RoundedCornerShape(16.dp)
     ) {
         Box {
-            Column(modifier = modifier
-                .padding(24.dp)
-                .align(Center)) {
-                val imagePainter = rememberAsyncImagePainter(R.drawable.db_error)
+            Column(
+                modifier = modifier
+                    .padding(24.dp)
+                    .align(Center)
+            ) {
                 Image(
                     modifier = Modifier
                         .clip(RoundedCornerShape(8.dp))
                         .align(CenterHorizontally)
                         .sizeIn(maxHeight = 120.dp),
-                    painter = imagePainter,
+                    painter = painterResource(id = R.drawable.db_error),
                     contentDescription = null,
                 )
                 Text(modifier = modifier.align(CenterHorizontally), text = message)

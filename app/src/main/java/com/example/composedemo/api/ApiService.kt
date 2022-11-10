@@ -15,7 +15,7 @@ interface ApiService {
     @GET("breed/{breedName}/images/random")
     suspend fun getImageUrl(@Path("breedName") breedName: String): ImageResponse
 
-    @GET("breed/{breedName}/images")
+    @GET("breed/{breedName}/images/random/7")
     suspend fun getListOfImages(@Path("breedName") breedName: String): DetailsResponse
 
     companion object {

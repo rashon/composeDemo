@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -31,7 +30,6 @@ import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import com.example.composedemo.R
 import com.example.composedemo.domain.model.BreedModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
@@ -50,8 +48,7 @@ fun BreedsListItem(
         ) {
             val imagePainter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(LocalContext.current).data(item.imageUrls?.first())
-                    .crossfade(true).size(Size.ORIGINAL).build(),
-                error = painterResource(id = R.drawable.ic_launcher_background),
+                    .crossfade(true).size(Size.ORIGINAL).build()
             )
             Image(
                 modifier = Modifier
@@ -60,8 +57,7 @@ fun BreedsListItem(
                 painter = imagePainter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-
-                )
+            )
             if (imagePainter.state is AsyncImagePainter.State.Loading) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
