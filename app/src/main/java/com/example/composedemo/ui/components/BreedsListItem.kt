@@ -19,12 +19,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
@@ -67,16 +69,18 @@ fun BreedsListItem(
                         .align(Alignment.Center),
                 )
             }
+
             TextWithShadow(
                 text = item.name,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.surface,
-                shadowColor = MaterialTheme.colorScheme.onSurface,
+                color = Color.White,
+                shadowColor = Color.Black,
+                style = MaterialTheme.typography.labelLarge.copy(lineHeight = 16.sp),
                 modifier = Modifier
                     .align(BottomCenter)
-                    .background(MaterialTheme.colorScheme.background.copy(alpha = 0.4f))
+                    .background(Color.Black.copy(alpha = 0.15f))
                     .fillMaxWidth()
-                    .padding(8.dp)
+                    .padding(horizontal = 8.dp)
             )
         }
 
