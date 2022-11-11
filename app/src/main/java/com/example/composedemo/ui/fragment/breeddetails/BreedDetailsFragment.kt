@@ -3,6 +3,7 @@ package com.example.composedemo.ui.fragment.breeddetails
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun BreedDetailsFragment(
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier.fillMaxSize(),
     breedId: String,
     viewModel: BreedDetailsVM = koinViewModel()
 ) {
@@ -27,9 +28,9 @@ fun BreedDetailsFragment(
     viewModel.getBreedDetails(breedId)
 
     Surface(
-        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
+        modifier = modifier, color = MaterialTheme.colorScheme.background
     ) {
-        Box(modifier = modifier.fillMaxSize()) {
+        Box(modifier = modifier) {
             if (viewModel.errorMessage.isEmpty()) {
                 if (viewModel.isLoading) {
                     CircularProgressIndicator(
@@ -45,7 +46,13 @@ fun BreedDetailsFragment(
                     )
                 }
             } else {
-                ErrorBox(message = viewModel.errorMessage)
+                ErrorBox(
+                    message = viewModel.errorMessage, modifier = Modifier
+                        .fillMaxWidth()
+                        .align(
+                            Alignment.Center
+                        )
+                )
             }
         }
     }
