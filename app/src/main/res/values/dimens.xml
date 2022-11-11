@@ -18,6 +18,6 @@
 
     <dimen name="error_message_max_size">120dp</dimen>
 
-    <dimen name="details_image_pager_max_height">240dp</dimen>
+    <dimen name="details_image_pager_max_height">480dp</dimen>
 
 </resources>

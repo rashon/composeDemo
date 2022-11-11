@@ -57,19 +57,29 @@ fun BreedDetailsScreen(
     imageList: List<String>? = null
 ) {
     val scrollState = rememberScrollState()
+    if (imageList == null) return
+    val pagerState = rememberPagerState()
+    var pageSize by remember { mutableStateOf(IntSize.Zero) }
+    val lastIndex by remember(pagerState.currentPage) {
+        derivedStateOf { pagerState.currentPage == imageList.size - 1 }
+    }
+
+    LaunchedEffect(pagerState.currentPage) {
+        while (true) {
+            yield()
+            delay(6000)
+            pagerState.animateScrollBy(
+                value = if (lastIndex) -(pageSize.width.toFloat() * imageList.size) else pageSize.width.toFloat(),
+                animationSpec = tween(if (lastIndex) 2000 else 1400)
+            )
+        }
+    }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-
-        if (imageList == null) return
-        val pagerState = rememberPagerState()
-        var pageSize by remember { mutableStateOf(IntSize.Zero) }
-        val lastIndex by remember(pagerState.currentPage) {
-            derivedStateOf { pagerState.currentPage == imageList.size - 1 }
-        }
 
         Box {
             HorizontalPager(
@@ -86,8 +96,7 @@ fun BreedDetailsScreen(
                         // Calculate the absolute offset for the current page from the
                         // scroll position. We use the absolute value which allows us to mirror
                         // any effects for both directions
-                        val pageOffset =
-                            calculateCurrentOffsetForPage(imageIndex).absoluteValue
+                        val pageOffset = calculateCurrentOffsetForPage(imageIndex).absoluteValue
 
                         // We animate the scaleX + scaleY, between 85% and 100%
                         lerp(
@@ -101,9 +110,7 @@ fun BreedDetailsScreen(
 
                         // We animate the alpha, between 50% and 100%
                         alpha = lerp(
-                            start = 0.5f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                            start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
                         )
                     }
                     .onSizeChanged { pageSize = it }) {
@@ -141,17 +148,6 @@ fun BreedDetailsScreen(
                 unSelectedColor = MaterialTheme.colorScheme.primary
             )
 
-            LaunchedEffect(pagerState.currentPage) {
-                while (true) {
-                    yield()
-                    delay(6000)
-                    pagerState.animateScrollBy(
-                        value = if (lastIndex) -(pageSize.width.toFloat() * imageList.size) else pageSize.width.toFloat(),
-                        animationSpec = tween(if (lastIndex) 2000 else 1400)
-                    )
-                }
-            }
-
         }
 
         Text(
@@ -175,8 +171,7 @@ fun BreedDetailsScreen(
 fun ItemsScreenPreview() {
     ComposeDemoTheme {
         BreedDetailsScreen(
-            breedId = "Preview test",
-            imageList = listOf()
+            breedId = "Preview test", imageList = listOf()
         )
     }
 }
