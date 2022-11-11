@@ -7,9 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import com.example.composedemo.R
 
 @Composable
 fun TextWithShadow(
@@ -26,9 +27,12 @@ fun TextWithShadow(
         textAlign = textAlign,
         style = style,
         modifier = modifier
-            .offset(x = 1.dp, y = 1.dp)
+            .offset(
+                x = dimensionResource(id = R.dimen.text_shadow_offset),
+                y = dimensionResource(id = R.dimen.text_shadow_offset)
+            )
             .alpha(0.5f)
-            .blur(2.dp)
+            .blur(dimensionResource(id = R.dimen.text_shadow_blur))
     )
     Text(
         text = text,

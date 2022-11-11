@@ -20,9 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -30,14 +30,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import androidx.compose.ui.util.lerp
 import com.example.composedemo.R
 import com.example.composedemo.ui.components.DotsIndicator
 import com.example.composedemo.ui.components.ErrorBox
@@ -69,7 +69,7 @@ fun BreedDetailsScreen(
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                     modifier = Modifier
-                        .sizeIn(maxWidth = 56.dp)
+                        .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
                         .align(Alignment.Center)
                 )
             } else {
@@ -91,37 +91,36 @@ fun BreedDetailsScreen(
                             state = pagerState,
                             modifier = modifier.align(Alignment.TopCenter)
                         ) { imageIndex ->
-                            Box(
-                                modifier = modifier
-                                    .sizeIn(
-                                        minHeight = 2400.dp, maxHeight = 240.dp
-                                    )
-                                    .graphicsLayer {
-                                        // Calculate the absolute offset for the current page from the
-                                        // scroll position. We use the absolute value which allows us to mirror
-                                        // any effects for both directions
-                                        val pageOffset =
-                                            calculateCurrentOffsetForPage(imageIndex).absoluteValue
+                            Box(modifier = modifier
+                                .sizeIn(
+                                    minHeight = dimensionResource(id = R.dimen.details_image_pager_max_height),
+                                    maxHeight = dimensionResource(id = R.dimen.details_image_pager_max_height)
+                                )
+                                .graphicsLayer {
+                                    // Calculate the absolute offset for the current page from the
+                                    // scroll position. We use the absolute value which allows us to mirror
+                                    // any effects for both directions
+                                    val pageOffset =
+                                        calculateCurrentOffsetForPage(imageIndex).absoluteValue
 
-                                        // We animate the scaleX + scaleY, between 85% and 100%
-                                        lerp(
-                                            start = 0.55f,
-                                            stop = 1f,
-                                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                        ).also { scale ->
-                                            scaleX = scale
-                                            scaleY = scale
-                                        }
-
-                                        // We animate the alpha, between 50% and 100%
-                                        alpha = lerp(
-                                            start = 0.5f,
-                                            stop = 1f,
-                                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                        )
+                                    // We animate the scaleX + scaleY, between 85% and 100%
+                                    lerp(
+                                        start = 0.55f,
+                                        stop = 1f,
+                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                    ).also { scale ->
+                                        scaleX = scale
+                                        scaleY = scale
                                     }
-                                    .onSizeChanged { pageSize = it }
-                            ) {
+
+                                    // We animate the alpha, between 50% and 100%
+                                    alpha = lerp(
+                                        start = 0.5f,
+                                        stop = 1f,
+                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                                    )
+                                }
+                                .onSizeChanged { pageSize = it }) {
                                 val imagePainter = rememberAsyncImagePainter(
                                     model = ImageRequest.Builder(LocalContext.current)
                                         .data(viewModel.imageList[imageIndex]).crossfade(true)
@@ -134,13 +133,13 @@ fun BreedDetailsScreen(
                                     contentScale = ContentScale.Crop,
                                 )
 
-                                Spacer(modifier = Modifier.padding(4.dp))
+                                Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_half)))
 
                                 if (imagePainter.state is AsyncImagePainter.State.Loading) {
                                     CircularProgressIndicator(
                                         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                                         modifier = Modifier
-                                            .sizeIn(maxWidth = 56.dp)
+                                            .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
                                             .align(Alignment.Center),
                                     )
                                 }
@@ -150,7 +149,7 @@ fun BreedDetailsScreen(
                         DotsIndicator(
                             modifier = modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(bottom = 32.dp),
+                                .padding(bottom = dimensionResource(id = R.dimen.padding_default_triple)),
                             totalDots = viewModel.imageList.size,
                             selectedIndex = pagerState.currentPage,
                             selectedColor = MaterialTheme.colorScheme.onPrimary,
@@ -161,11 +160,6 @@ fun BreedDetailsScreen(
                             while (true) {
                                 yield()
                                 delay(6000)
-//                            // increasing the position and check the limit
-//                            var newPosition = pagerState.currentPage + 1
-//                            if (newPosition > viewModel.imageList.lastIndex) newPosition = 0
-//                            // scrolling to the new position.
-//                            pagerState.animateScrollToPage(newPosition)
                                 pagerState.animateScrollBy(
                                     value = if (lastIndex) -(pageSize.width.toFloat() * viewModel.imageList.size) else pageSize.width.toFloat(),
                                     animationSpec = tween(if (lastIndex) 2000 else 1400)
@@ -178,13 +172,13 @@ fun BreedDetailsScreen(
                     Text(
                         text = breedId.uppercase(),
                         modifier = modifier
-                            .padding(8.dp)
+                            .padding(dimensionResource(id = R.dimen.padding_default))
                             .align(CenterHorizontally),
                         style = MaterialTheme.typography.titleLarge
                     )
                     Text(
                         text = stringResource(id = R.string.bla_bla_text),
-                        modifier = modifier.padding(16.dp),
+                        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_default_double)),
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }

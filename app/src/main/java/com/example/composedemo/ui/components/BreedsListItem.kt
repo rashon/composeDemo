@@ -22,14 +22,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
+import com.example.composedemo.R
 import com.example.composedemo.domain.model.BreedModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
@@ -39,12 +40,14 @@ fun BreedsListItem(
     item: BreedModel, modifier: Modifier = Modifier, onItemClick: () -> Unit = {}
 ) {
     Card(
-        onClick = onItemClick, modifier = Modifier.fillMaxSize(), shape = RoundedCornerShape(16.dp)
+        onClick = onItemClick,
+        modifier = Modifier.fillMaxSize(),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_default_double))
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(dimensionResource(id = R.dimen.lazy_grid_item_height))
         ) {
             val imagePainter = rememberAsyncImagePainter(
                 model = ImageRequest.Builder(LocalContext.current).data(item.imageUrls?.first())
@@ -53,7 +56,7 @@ fun BreedsListItem(
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(8.dp)),
+                    .clip(RoundedCornerShape(dimensionResource(id = R.dimen.padding_default))),
                 painter = imagePainter,
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
@@ -62,7 +65,7 @@ fun BreedsListItem(
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                     modifier = Modifier
-                        .sizeIn(maxWidth = 56.dp)
+                        .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
                         .align(Alignment.Center),
                 )
             }
@@ -77,7 +80,7 @@ fun BreedsListItem(
                     .align(BottomCenter)
                     .background(Color.Black.copy(alpha = 0.15f))
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_default))
             )
         }
 

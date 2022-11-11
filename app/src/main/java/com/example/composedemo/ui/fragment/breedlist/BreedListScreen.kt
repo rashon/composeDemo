@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -15,8 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import com.example.composedemo.R
 import com.example.composedemo.ui.components.BreedsListItem
 import com.example.composedemo.ui.components.ErrorBox
 import com.example.composedemo.ui.theme.ComposeDemoTheme
@@ -40,21 +40,19 @@ fun BreedsListScreen(
                 CircularProgressIndicator(
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
                     modifier = Modifier
-                        .sizeIn(maxWidth = 56.dp)
+                        .sizeIn(maxWidth = dimensionResource(R.dimen.progress_bar_size))
                         .align(Alignment.Center)
                 )
             } else {
                 LazyVerticalGrid(
-                    modifier = Modifier.padding(16.dp),
-                    columns = GridCells.Adaptive(minSize = 152.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    modifier = modifier,
+                    columns = GridCells.Adaptive(minSize = dimensionResource(id = R.dimen.lazy_grid_column_min_size)),
+                    verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_default_double)),
+                    horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_default_double))
                 ) {
                     items(viewModel.breedList) { item ->
                         BreedsListItem(item = item,
-                            modifier = modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
+                            modifier = modifier.fillMaxWidth(),
                             onItemClick = { onListItemClick.invoke(item.name) })
                     }
                 }

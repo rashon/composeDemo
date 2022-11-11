@@ -15,9 +15,9 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.composedemo.R
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
@@ -27,19 +27,21 @@ fun ErrorBox(
     message: String, modifier: Modifier = Modifier, onItemClick: () -> Unit = {}
 ) {
     Card(
-        onClick = onItemClick, modifier = Modifier.padding(24.dp), shape = RoundedCornerShape(16.dp)
+        onClick = onItemClick,
+        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_triple)),
+        shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_default_double))
     ) {
         Box {
             Column(
                 modifier = modifier
-                    .padding(24.dp)
+                    .padding(dimensionResource(id = R.dimen.padding_default_triple))
                     .align(Center)
             ) {
                 Image(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(RoundedCornerShape(dimensionResource(id = R.dimen.padding_default)))
                         .align(CenterHorizontally)
-                        .sizeIn(maxHeight = 120.dp),
+                        .sizeIn(maxHeight = dimensionResource(id = R.dimen.error_message_max_size)),
                     painter = painterResource(id = R.drawable.db_error),
                     contentDescription = null,
                 )

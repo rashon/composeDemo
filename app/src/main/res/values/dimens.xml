@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_default_half">4dp</dimen>
+    <dimen name="padding_default">8dp</dimen>
+    <dimen name="padding_default_double">16dp</dimen>
+    <dimen name="padding_default_triple">24dp</dimen>
+    <dimen name="padding_default_quad">32dp</dimen>
+
+    <dimen name="progress_bar_size">56dp</dimen>
+    <dimen name="lazy_grid_column_min_size">152dp</dimen>
+    <dimen name="lazy_grid_dot_indicator_size">8dp</dimen>
+    <dimen name="lazy_grid_dot_indicator_padding">4dp</dimen>
+    <dimen name="lazy_grid_item_height">120dp</dimen>
+    <dimen name="lazy_grid_item_heading_text_line_size">16sp</dimen>
+
+    <dimen name="text_shadow_offset">1dp</dimen>
+    <dimen name="text_shadow_blur">2dp</dimen>
+
+    <dimen name="error_message_max_size">120dp</dimen>
+
+    <dimen name="details_image_pager_max_height">240dp</dimen>
+
+</resources>
