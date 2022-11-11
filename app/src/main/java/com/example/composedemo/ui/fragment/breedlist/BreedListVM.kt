@@ -18,7 +18,7 @@ class BreedListVM(private val breedsRepository: BreedsRepository) : ViewModel() 
     val breedList: List<BreedModel>
         get() = _breedList
 
-    fun getBreedList() {
+    private fun getBreedList() {
         viewModelScope.launch {
             isLoading = true
             val result = kotlin.runCatching {
@@ -44,6 +44,10 @@ class BreedListVM(private val breedsRepository: BreedsRepository) : ViewModel() 
                 isLoading = false
             }
         }
+    }
+
+    init {
+        getBreedList()
     }
 
 }

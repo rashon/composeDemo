@@ -40,7 +40,6 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.composedemo.R
 import com.example.composedemo.ui.components.DotsIndicator
-import com.example.composedemo.ui.components.ErrorBox
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -48,144 +47,125 @@ import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.yield
-import org.koin.androidx.compose.koinViewModel
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BreedDetailsScreen(
-    modifier: Modifier = Modifier, breedId: String, viewModel: BreedDetailsVM = koinViewModel()
+    modifier: Modifier = Modifier,
+    breedId: String,
+    imageList: List<String>? = null
 ) {
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(Unit, block = {
-        viewModel.getBreedDetails(breedId)
-    })
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
+    ) {
 
-    Box(modifier = modifier.fillMaxSize()) {
-        if (viewModel.errorMessage.isEmpty()) {
+        if (imageList == null) return
+        val pagerState = rememberPagerState()
+        var pageSize by remember { mutableStateOf(IntSize.Zero) }
+        val lastIndex by remember(pagerState.currentPage) {
+            derivedStateOf { pagerState.currentPage == imageList.size - 1 }
+        }
 
-            if (viewModel.isLoading) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                    modifier = Modifier
-                        .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
-                        .align(Alignment.Center)
-                )
-            } else {
-                Column(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState)
-                ) {
-
-                    val pagerState = rememberPagerState()
-                    var pageSize by remember { mutableStateOf(IntSize.Zero) }
-                    val lastIndex by remember(pagerState.currentPage) {
-                        derivedStateOf { pagerState.currentPage == viewModel.imageList.size - 1 }
-                    }
-
-                    Box {
-                        HorizontalPager(
-                            count = viewModel.imageList.size,
-                            state = pagerState,
-                            modifier = modifier.align(Alignment.TopCenter)
-                        ) { imageIndex ->
-                            Box(modifier = modifier
-                                .sizeIn(
-                                    minHeight = dimensionResource(id = R.dimen.details_image_pager_max_height),
-                                    maxHeight = dimensionResource(id = R.dimen.details_image_pager_max_height)
-                                )
-                                .graphicsLayer {
-                                    // Calculate the absolute offset for the current page from the
-                                    // scroll position. We use the absolute value which allows us to mirror
-                                    // any effects for both directions
-                                    val pageOffset =
-                                        calculateCurrentOffsetForPage(imageIndex).absoluteValue
-
-                                    // We animate the scaleX + scaleY, between 85% and 100%
-                                    lerp(
-                                        start = 0.55f,
-                                        stop = 1f,
-                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                    ).also { scale ->
-                                        scaleX = scale
-                                        scaleY = scale
-                                    }
-
-                                    // We animate the alpha, between 50% and 100%
-                                    alpha = lerp(
-                                        start = 0.5f,
-                                        stop = 1f,
-                                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                                    )
-                                }
-                                .onSizeChanged { pageSize = it }) {
-                                val imagePainter = rememberAsyncImagePainter(
-                                    model = ImageRequest.Builder(LocalContext.current)
-                                        .data(viewModel.imageList[imageIndex]).crossfade(true)
-                                        .build()
-                                )
-                                Image(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    painter = imagePainter,
-                                    contentDescription = null,
-                                    contentScale = ContentScale.Crop,
-                                )
-
-                                Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_half)))
-
-                                if (imagePainter.state is AsyncImagePainter.State.Loading) {
-                                    CircularProgressIndicator(
-                                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                        modifier = Modifier
-                                            .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
-                                            .align(Alignment.Center),
-                                    )
-                                }
-                            }
-                        }
-
-                        DotsIndicator(
-                            modifier = modifier
-                                .align(Alignment.BottomCenter)
-                                .padding(bottom = dimensionResource(id = R.dimen.padding_default_triple)),
-                            totalDots = viewModel.imageList.size,
-                            selectedIndex = pagerState.currentPage,
-                            selectedColor = MaterialTheme.colorScheme.onPrimary,
-                            unSelectedColor = MaterialTheme.colorScheme.primary
-                        )
-
-                        LaunchedEffect(pagerState.currentPage) {
-                            while (true) {
-                                yield()
-                                delay(6000)
-                                pagerState.animateScrollBy(
-                                    value = if (lastIndex) -(pageSize.width.toFloat() * viewModel.imageList.size) else pageSize.width.toFloat(),
-                                    animationSpec = tween(if (lastIndex) 2000 else 1400)
-                                )
-                            }
-                        }
-
-                    }
-
-                    Text(
-                        text = breedId.uppercase(),
-                        modifier = modifier
-                            .padding(dimensionResource(id = R.dimen.padding_default))
-                            .align(CenterHorizontally),
-                        style = MaterialTheme.typography.titleLarge
+        Box {
+            HorizontalPager(
+                count = imageList.size,
+                state = pagerState,
+                modifier = modifier.align(Alignment.TopCenter)
+            ) { imageIndex ->
+                Box(modifier = modifier
+                    .sizeIn(
+                        minHeight = dimensionResource(id = R.dimen.details_image_pager_max_height),
+                        maxHeight = dimensionResource(id = R.dimen.details_image_pager_max_height)
                     )
-                    Text(
-                        text = stringResource(id = R.string.bla_bla_text),
-                        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_default_double)),
-                        style = MaterialTheme.typography.bodyLarge
+                    .graphicsLayer {
+                        // Calculate the absolute offset for the current page from the
+                        // scroll position. We use the absolute value which allows us to mirror
+                        // any effects for both directions
+                        val pageOffset =
+                            calculateCurrentOffsetForPage(imageIndex).absoluteValue
+
+                        // We animate the scaleX + scaleY, between 85% and 100%
+                        lerp(
+                            start = 0.55f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
+                        }
+
+                        // We animate the alpha, between 50% and 100%
+                        alpha = lerp(
+                            start = 0.5f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                    }
+                    .onSizeChanged { pageSize = it }) {
+                    val imagePainter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(imageList[imageIndex]).crossfade(true).build()
+                    )
+                    Image(
+                        modifier = Modifier.fillMaxWidth(),
+                        painter = imagePainter,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                    )
+
+                    Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_half)))
+
+                    if (imagePainter.state is AsyncImagePainter.State.Loading) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            modifier = Modifier
+                                .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
+                                .align(Alignment.Center),
+                        )
+                    }
+                }
+            }
+
+            DotsIndicator(
+                modifier = modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = dimensionResource(id = R.dimen.padding_default_triple)),
+                totalDots = imageList.size,
+                selectedIndex = pagerState.currentPage,
+                selectedColor = MaterialTheme.colorScheme.onPrimary,
+                unSelectedColor = MaterialTheme.colorScheme.primary
+            )
+
+            LaunchedEffect(pagerState.currentPage) {
+                while (true) {
+                    yield()
+                    delay(6000)
+                    pagerState.animateScrollBy(
+                        value = if (lastIndex) -(pageSize.width.toFloat() * imageList.size) else pageSize.width.toFloat(),
+                        animationSpec = tween(if (lastIndex) 2000 else 1400)
                     )
                 }
             }
-        } else {
-            ErrorBox(message = viewModel.errorMessage)
+
         }
+
+        Text(
+            text = breedId.uppercase(),
+            modifier = modifier
+                .padding(dimensionResource(id = R.dimen.padding_default))
+                .align(CenterHorizontally),
+            style = MaterialTheme.typography.titleLarge
+        )
+        Text(
+            text = stringResource(id = R.string.bla_bla_text),
+            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_default_double)),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
 
@@ -194,6 +174,9 @@ fun BreedDetailsScreen(
 @Composable
 fun ItemsScreenPreview() {
     ComposeDemoTheme {
-        BreedDetailsScreen(breedId = "Preview test")
+        BreedDetailsScreen(
+            breedId = "Preview test",
+            imageList = listOf()
+        )
     }
 }

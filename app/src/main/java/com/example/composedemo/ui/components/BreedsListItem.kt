@@ -41,11 +41,13 @@ fun BreedsListItem(
 ) {
     Card(
         onClick = onItemClick,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.padding_default)),
         shape = RoundedCornerShape(dimensionResource(id = R.dimen.padding_default_double))
     ) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .height(dimensionResource(id = R.dimen.lazy_grid_item_height))
         ) {
@@ -71,7 +73,7 @@ fun BreedsListItem(
             }
 
             TextWithShadow(
-                text = item.name,
+                text = item.name.uppercase(),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onPrimary,
                 shadowColor = MaterialTheme.colorScheme.primary,
