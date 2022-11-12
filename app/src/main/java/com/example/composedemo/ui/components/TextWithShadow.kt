@@ -1,6 +1,8 @@
 package com.example.composedemo.ui.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,17 +12,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.composedemo.R
+import com.example.composedemo.ui.theme.ComposeDemoTheme
+import com.example.composedemo.ui.theme.White
 
 @Composable
 fun TextWithShadow(
     text: String,
-    modifier: Modifier,
-    textAlign: TextAlign,
-    color: Color,
-    shadowColor: Color,
-    style: TextStyle
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
+    textColor: Color = MaterialTheme.colorScheme.onPrimary,
+    shadowColor: Color = MaterialTheme.colorScheme.primary,
+    style: TextStyle = MaterialTheme.typography.bodySmall
 ) {
+    //Text shadow
     Text(
         text = text,
         color = shadowColor,
@@ -37,8 +43,17 @@ fun TextWithShadow(
     Text(
         text = text,
         textAlign = textAlign,
-        color = color,
+        color = textColor,
         style = style,
         modifier = modifier
     )
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewTextShadow() {
+    ComposeDemoTheme {
+        TextWithShadow(text = "Test", textColor = White)
+    }
 }

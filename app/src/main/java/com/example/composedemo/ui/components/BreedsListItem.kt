@@ -33,6 +33,7 @@ import coil.size.Size
 import com.example.composedemo.R
 import com.example.composedemo.domain.model.BreedModel
 import com.example.composedemo.ui.theme.ComposeDemoTheme
+import com.example.composedemo.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,8 +76,7 @@ fun BreedsListItem(
             TextWithShadow(
                 text = item.name.uppercase(),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary,
-                shadowColor = MaterialTheme.colorScheme.primary,
+                textColor = White,
                 style = MaterialTheme.typography.labelLarge.copy(lineHeight = 16.sp),
                 modifier = Modifier
                     .align(BottomCenter)
