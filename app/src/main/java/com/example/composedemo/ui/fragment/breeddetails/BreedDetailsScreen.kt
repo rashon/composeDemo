@@ -4,17 +4,18 @@ import android.content.res.Configuration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.animateScrollBy
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,7 +25,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -78,85 +78,83 @@ fun BreedDetailsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box {
-            HorizontalPager(
-                count = imageList.size,
-                state = pagerState,
-                modifier = modifier.align(Alignment.TopCenter)
-            ) { imageIndex ->
-                Box(modifier = modifier
-                    .sizeIn(
-                        minHeight = dimensionResource(id = R.dimen.details_image_pager_max_height),
-                        maxHeight = dimensionResource(id = R.dimen.details_image_pager_max_height)
-                    )
-                    .graphicsLayer {
-                        // Calculate the absolute offset for the current page from the
-                        // scroll position. We use the absolute value which allows us to mirror
-                        // any effects for both directions
-                        val pageOffset = calculateCurrentOffsetForPage(imageIndex).absoluteValue
+        HorizontalPager(
+            count = imageList.size,
+            state = pagerState,
+            modifier = modifier.wrapContentSize()
+        ) { imageIndex ->
 
-                        // We animate the scaleX + scaleY, between 85% and 100%
-                        lerp(
-                            start = 0.55f,
-                            stop = 1f,
-                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
-                        }
+            Surface(modifier = modifier
+                .sizeIn(
+                    minHeight = dimensionResource(id = R.dimen.details_image_pager_max_height),
+                    maxHeight = dimensionResource(id = R.dimen.details_image_pager_max_height)
+                )
+                .graphicsLayer {
+                    // Calculate the absolute offset for the current page from the
+                    // scroll position. We use the absolute value which allows us to mirror
+                    // any effects for both directions
+                    val pageOffset = calculateCurrentOffsetForPage(imageIndex).absoluteValue
 
-                        // We animate the alpha, between 50% and 100%
-                        alpha = lerp(
-                            start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
+                    // We animate the scaleX + scaleY, between 85% and 100%
+                    lerp(
+                        start = 0.55f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    ).also { scale ->
+                        scaleX = scale
+                        scaleY = scale
                     }
-                    .onSizeChanged { pageSize = it }) {
-                    val imagePainter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(imageList[imageIndex]).crossfade(true).build()
-                    )
-                    Image(
-                        modifier = Modifier.fillMaxWidth(),
-                        painter = imagePainter,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                    )
 
-                    Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_half)))
+                    // We animate the alpha, between 50% and 100%
+                    alpha = lerp(
+                        start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                    )
+                }
+                .onSizeChanged { pageSize = it }) {
+                val imagePainter = rememberAsyncImagePainter(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(imageList[imageIndex]).crossfade(true).build()
+                )
 
-                    if (imagePainter.state is AsyncImagePainter.State.Loading) {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                            modifier = Modifier
-                                .sizeIn(maxWidth = dimensionResource(id = R.dimen.progress_bar_size))
-                                .align(Alignment.Center),
-                        )
-                    }
+                Image(
+                    modifier = Modifier.fillMaxWidth(),
+                    painter = imagePainter,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                )
+
+                Spacer(modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_default_half)))
+
+                if (imagePainter.state is AsyncImagePainter.State.Loading) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                        modifier = Modifier
+                            .wrapContentSize()
+                    )
                 }
             }
-
-            DotsIndicator(
-                modifier = modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = dimensionResource(id = R.dimen.padding_default_triple)),
-                totalDots = imageList.size,
-                selectedIndex = pagerState.currentPage,
-                selectedColor = MaterialTheme.colorScheme.onPrimary,
-                unSelectedColor = MaterialTheme.colorScheme.primary
-            )
-
         }
+
+        DotsIndicator(
+            modifier = modifier
+                .wrapContentSize()
+                .padding(all = dimensionResource(id = R.dimen.padding_default_triple)),
+            totalDots = imageList.size,
+            selectedIndex = pagerState.currentPage,
+            selectedColor = MaterialTheme.colorScheme.onPrimary,
+            unSelectedColor = MaterialTheme.colorScheme.primary
+        )
 
         Text(
             text = breedId.uppercase(),
-            modifier = modifier
-                .padding(dimensionResource(id = R.dimen.padding_default))
-                .align(CenterHorizontally),
+            modifier = modifier.wrapContentSize(),
             style = MaterialTheme.typography.titleLarge
         )
+
         Text(
             text = stringResource(id = R.string.bla_bla_text),
             modifier = modifier.padding(dimensionResource(id = R.dimen.padding_default_double)),
